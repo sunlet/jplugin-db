@@ -62,7 +62,7 @@ public class Plugin extends AbstractPlugin{
 		this.addExtensionPoint(ExtensionPoint.createUnique(EP_MYSQL_AUTH_CHECK_HANDLER, ILoginRequestHandler.class));
 		
 		//对COMMAND的执行进行拦截过滤的扩展点
-		this.addExtensionPoint(ExtensionPoint.createList(EP_MYSQL_COMMAND_FILTER,ICommandFilter.class));
+		this.addExtensionPoint(ExtensionPoint.createListWithPriority(EP_MYSQL_COMMAND_FILTER,ICommandFilter.class));
 	}
 	
 	MysqlStarter thread;
