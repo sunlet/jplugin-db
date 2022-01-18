@@ -15,6 +15,7 @@ import net.jplugin.core.kernel.api.RefAnnotationSupport;
 import net.jplugin.core.log.api.LogFactory;
 import net.jplugin.core.log.api.Logger;
 import net.jplugin.db.mysql.svr.api.IResponseObject;
+import net.jplugin.db.mysql.svr.consts.ColumnType;
 import net.jplugin.db.mysql.svr.resp.rs.ColumnCountResponse;
 import net.jplugin.db.mysql.svr.resp.rs.ColumnTypeResponse;
 import net.jplugin.db.mysql.svr.resp.rs.ColumnValueResponse;
@@ -139,11 +140,11 @@ public class ResultSetResponse implements IResponseObject {
         int cnt = meta.getColumnCount();
 
         //两种实现方式：
-        // 1.meta.getColumnTypeName(1)，将类型名再转换为mysql的字段类型
+        // 1.ColumnType.getType(meta.getColumnTypeName(i)).getValue()
         // 2.((com.mysql.cj.jdbc.result.ResultSetMetaData) meta).getFields()
-        Field[] fields = ((com.mysql.cj.jdbc.result.ResultSetMetaData) meta).getFields();
+
         for (int i = 1; i <= cnt; i++) {
-            listTypes.add(fields[i - 1].getMysqlTypeId());
+            listTypes.add(ColumnType.getType(meta.getColumnTypeName(i)).getValue());
             listNames.add(meta.getColumnName(i));
         }
 
