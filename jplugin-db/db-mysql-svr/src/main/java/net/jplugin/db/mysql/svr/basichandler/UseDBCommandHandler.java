@@ -8,11 +8,12 @@ import net.jplugin.db.mysql.svr.req.CommandRequest;
 import net.jplugin.db.mysql.svr.resp.SuccessResponse;
 
 
-@BindExtension(pointTo = net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_COMMAND_HANDLER, name = Constants.COMMAND_PING)
-public class PingCommandHandler implements ICommandHandler {
+@BindExtension(pointTo = net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_COMMAND_HANDLER, name = Constants.COMMAND_USE_DB)
+public class UseDBCommandHandler implements ICommandHandler {
 
     @Override
     public void handleCommand(ConnectionContext connCtx, CommandRequest commandPackage) {
+        connCtx.setCurrentDb(commandPackage.getCommand());
         SuccessResponse resp = SuccessResponse.create(0, 0);
         connCtx.setResponseObject(resp);
     }
