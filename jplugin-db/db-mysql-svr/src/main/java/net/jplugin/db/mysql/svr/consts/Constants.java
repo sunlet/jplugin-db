@@ -8,8 +8,10 @@ public class Constants {
 	
 
 	//CommandTypes
+    public static final String COMMAND_QUIT = 0x01 + "";
     public static final String COMMAND_USE_DB = 0x02 + "";
     public static final String COMMAND_QUERY = 0x03 + "";
+    public static final String COMMAND_FIELD_LIST = 0x04 + "";
     public static final String COMMAND_PING = 0x0e + "";
 //    public static final byte COMMAND_CREATE_DB = 0x05;
 //    public static final byte COMMAND_DROP_DB = 0x06;
