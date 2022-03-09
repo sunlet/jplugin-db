@@ -4,22 +4,36 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>net.jplugin.db</groupId>
-		<artifactId>base</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+	<groupId>net.jplugin.db</groupId>
+	<version>2.0.2-SNAPSHOT</version>
 	<artifactId>db-mysql-svr</artifactId>
+
+
 	<properties>
-		
+		<!-- <maven.deploy.skip>true</maven.deploy.skip>
+		<maven.install.skip>true</maven.install.skip>
+		<maven.test.skip>true</maven.test.skip>
+ 		-->
+ 		
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+		<projectVersion>2.0.0-SNAPSHOT</projectVersion>
 	</properties>
+
+
 	<dependencies>
 		<dependency>
+			<groupId>net.jplugin.mvn</groupId>
+			<artifactId>jplugin-core</artifactId>
+			<version>2.0.2-SNAPSHOT</version>
+		</dependency>
+		<!-- <dependency>
 			<groupId>net.jplugin.db</groupId>
 			<artifactId>db-basic</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 			<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
@@ -63,5 +77,18 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://maven.haiziwang.com/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://maven.haiziwang.com/nexus/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
 
 </project>

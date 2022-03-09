@@ -24,6 +24,11 @@ public class ConnectionContext {
      * if db is not null, this context may use db;
      */
     private String currentDb;
+    
+    /**
+     * 	当前登录用户
+     */
+    private String currentUser;
 
     /**
               *   存储连接相关的属性，生命周期和Connection同步
@@ -76,8 +81,16 @@ public class ConnectionContext {
 	public void setAuthizeSuccess() {
 		this.authed = true;
 	}
+	
+    public String getCurrentUser() {
+		return currentUser;
+	}
 
-    public IResponseObject getResponseObject() {
+	public void setCurrentUser(String currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public IResponseObject getResponseObject() {
         return responseObject;
     }
 

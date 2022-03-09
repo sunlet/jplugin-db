@@ -11,6 +11,7 @@ public class ServerGreetingResponse extends AbstractPackedResponse {
 
 	public static byte[] salt1 = {1, 1, 1, 1, 1, 1, 1, 1};
     public static final String AUTHENCATION_PLUGIN = "mysql_native_password";
+//	public static final String AUTHENCATION_PLUGIN = "mysql_clear_password";
     private static final int SERVER_VERSION = 0x0a;
     private static final String MYSQL_SERVER_VERSION = "5.7.22";
     public static byte[] salt2 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
