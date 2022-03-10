@@ -34,6 +34,8 @@ public class AuthRequest extends AbstractPackedRequest {
     private String userName;
 
     private String authResponse;
+    
+    private byte[] password;
 
     private String database;
 
@@ -57,6 +59,9 @@ public class AuthRequest extends AbstractPackedRequest {
         } else if (0 != (clientCapability & CLIENT_SECURE_CONNECTION)) {
             int length = IOUtils.readLengthEncodedInteger(byteBuf);
             authResponse = IOUtils.readFixLengthString(byteBuf, length);
+            
+            //密码保存到bytes。 2022-3-10
+            password = IOUtils.readBytes(byteBuf, length);
         } else {
             authResponse = IOUtils.readString(byteBuf);
         }
