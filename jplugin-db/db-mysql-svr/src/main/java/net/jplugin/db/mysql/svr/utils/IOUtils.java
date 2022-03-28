@@ -8,12 +8,6 @@ import static net.jplugin.db.mysql.svr.consts.Constants.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-/**
- * @author yuqi
- * @mail yuqi4733@gmail.com
- * @description your description
- * @time 2/7/20 20:16
- **/
 public class IOUtils {
 
     public static final byte END_FLAG = 0x00;
@@ -132,8 +126,10 @@ public class IOUtils {
             return;
         }
 
-        int length = string.length();
+        
         byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
+        int length = bytes.length;
+        
         IOUtils.writeLengthEncodedInteger(length, byteBuf);
         if (length > 0) {
             IOUtils.writeBytesWithoutEndFlag(bytes, byteBuf);
@@ -164,6 +160,24 @@ public class IOUtils {
         byte[] byteResult = new byte[length];
         tmp.readBytes(byteResult);
         return new String(byteResult);
+    }
+    
+    /**
+     * 2022-3-22
+     * @param 
+     * @return
+     */
+    public static  byte[] readBytes(ByteBuf byteBuf) {
+        ByteBuf tmp = PooledByteBufAllocator.DEFAULT.buffer(byteBuf.readableBytes());
+        byte b;
+        while (byteBuf.isReadable() && (b = ((byte) (byteBuf.readByte() & 0xff))) != 0x00) {
+            tmp.writeByte(b);
+        }
+
+        int length = tmp.readableBytes();
+        byte[] byteResult = new byte[length];
+        tmp.readBytes(byteResult);
+        return byteResult;
     }
 
     /**
@@ -239,6 +253,21 @@ public class IOUtils {
             return new String(readBytes(byteBuf, IOUtils.readInteger(byteBuf, 3)));
         } else {
             return new String(readBytes(byteBuf, IOUtils.readInteger(byteBuf, 8)));
+        }
+    }
+    
+    public static byte[] readLengthBytesArray(ByteBuf byteBuf) {
+        int firstByteInt = IOUtils.readInteger(byteBuf, 1);
+        if (firstByteInt == 0xfb) {
+            return null;
+        } else if (firstByteInt < 251) {
+            return readBytes(byteBuf, firstByteInt);
+        } else if (firstByteInt == 0xfc) {
+            return readBytes(byteBuf, IOUtils.readInteger(byteBuf, 2));
+        } else if (firstByteInt == 0xfd) {
+            return readBytes(byteBuf, IOUtils.readInteger(byteBuf, 3));
+        } else {
+            return readBytes(byteBuf, IOUtils.readInteger(byteBuf, 8));
         }
     }
 

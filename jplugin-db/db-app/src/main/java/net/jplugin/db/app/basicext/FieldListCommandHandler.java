@@ -1,4 +1,4 @@
-package net.jplugin.db.mysql.svr.basichandler;
+package net.jplugin.db.app.basicext;
 
 import net.jplugin.core.kernel.api.BindExtension;
 import net.jplugin.db.mysql.svr.api.ConnectionContext;

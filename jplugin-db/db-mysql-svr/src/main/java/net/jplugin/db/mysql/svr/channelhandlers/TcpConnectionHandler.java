@@ -9,6 +9,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import net.jplugin.core.kernel.api.PluginEnvirement;
+import net.jplugin.core.kernel.api.RefExtension;
 import net.jplugin.core.kernel.api.RefExtensions;
 import net.jplugin.core.log.api.Logger;
 import net.jplugin.core.log.api.RefLogger;
@@ -55,8 +56,8 @@ public class TcpConnectionHandler extends ChannelInboundHandlerAdapter {
     
   
     
-    @RefExtensions(pointTo = net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_GREETING_HANDLER)
-    List<IServerGreetingHandler> greetingHandlerList;    
+    @RefExtension(pointTo = net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_GREETING_HANDLER)
+    IServerGreetingHandler greetingHandler;    
     private void handleGreeting(ConnectionContext connCtx) {
         if (logger.isInfoEnabled()) {
             logger.info("Now handler Server Greeting.");
@@ -65,7 +66,7 @@ public class TcpConnectionHandler extends ChannelInboundHandlerAdapter {
         IResponseObject response;
         try {
         	//查找优先级最高的一个执行
-	        greetingHandlerList.get(0).handleGreeting(connCtx);
+        	greetingHandler.handleGreeting(connCtx);
 	        response = connCtx.getResponseObject();
         }catch(Throwable th) {
         	response = null;

@@ -55,15 +55,21 @@ public class AuthRequest extends AbstractPackedRequest {
         this.userName = IOUtils.readString(byteBuf);
 
         if (0 != (clientCapability & CLIENT_PLUGIN_AUTH_LENENC_CLIENT_DATA)) {
-            authResponse = IOUtils.readLengthEncodedString(byteBuf);
+//            authResponse = IOUtils.readLengthEncodedString(byteBuf);
+            
+            password = IOUtils.readLengthBytesArray(byteBuf);
         } else if (0 != (clientCapability & CLIENT_SECURE_CONNECTION)) {
             int length = IOUtils.readLengthEncodedInteger(byteBuf);
-            authResponse = IOUtils.readFixLengthString(byteBuf, length);
+//            authResponse = IOUtils.readFixLengthString(byteBuf, length);
             
             //密码保存到bytes。 2022-3-10
             password = IOUtils.readBytes(byteBuf, length);
+            
+            
         } else {
-            authResponse = IOUtils.readString(byteBuf);
+//            authResponse = IOUtils.readString(byteBuf);
+            
+            password = IOUtils.readBytes(byteBuf);
         }
 
         if (0 != (clientCapability & CLIENT_CONNECT_WITH_DB)) {

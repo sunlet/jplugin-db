@@ -1,4 +1,4 @@
-package net.jplugin.db.mysql.svr.basichandler;
+package net.jplugin.db.app.basicext;
 
 import net.jplugin.common.kits.StringKit;
 import net.jplugin.common.kits.filter.FilterChain;
