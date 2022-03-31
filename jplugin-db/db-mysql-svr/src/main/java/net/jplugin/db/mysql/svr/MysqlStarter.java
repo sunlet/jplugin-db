@@ -9,6 +9,7 @@ import com.google.common.base.Throwables;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
@@ -21,6 +22,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.jplugin.core.config.api.RefConfig;
+import net.jplugin.core.kernel.api.Beans;
 import net.jplugin.core.kernel.api.PluginEnvirement;
 import net.jplugin.core.kernel.api.RefAnnotationSupport;
 import net.jplugin.core.log.api.LogFactory;
@@ -88,7 +90,7 @@ public class MysqlStarter extends RefAnnotationSupport implements Runnable{
                     ));
 
                     pipeline.addLast("bytebuf_to_message", new ByteBufToRequestDecoder());
-                    pipeline.addLast("mysql_message_handler", new MysqlRequestHandler());
+                    pipeline.addLast("mysql_message_handler", (ChannelHandler) Beans.find("MysqlRequestHandler"));
                 }
             });
 

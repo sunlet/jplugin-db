@@ -40,5 +40,10 @@ public class Util {
 		return getCommandRequest(ctx).getCommand();
 	}
 
+	public static void cleanRequestInfo(ConnectionContext connCtx) {
+		connCtx.getRequestAttributes().clear();
+		connCtx.setResponseObject(null);
+	}
+
 
 }

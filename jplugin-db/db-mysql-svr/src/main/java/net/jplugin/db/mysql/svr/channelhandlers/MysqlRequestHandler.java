@@ -14,6 +14,8 @@ import io.netty.handler.codec.DecoderException;
 import io.netty.util.internal.StringUtil;
 import net.jplugin.common.kits.filter.FilterChain;
 import net.jplugin.common.kits.filter.FilterManager;
+import net.jplugin.core.config.api.RefConfig;
+import net.jplugin.core.kernel.api.BindBean;
 import net.jplugin.core.kernel.api.Initializable;
 import net.jplugin.core.kernel.api.PluginEnvirement;
 import net.jplugin.core.kernel.api.PluginFilterManager;
@@ -39,6 +41,7 @@ import net.jplugin.db.mysql.svr.resp.SuccessResponse;
 import net.jplugin.db.mysql.svr.utils.PatternUtils;
 import net.jplugin.db.mysql.svr.utils.Util;
 
+@BindBean(id = "MysqlRequestHandler")
 public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements ICommandFilter,Initializable{
 
     @RefExtensionMap(pointTo = net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_COMMAND_HANDLER)
@@ -54,7 +57,7 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
 			net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_COMMAND_FILTER, this);
 
     public MysqlRequestHandler() {
-        PluginEnvirement.INSTANCE.resolveRefAnnotation(this);
+//        PluginEnvirement.INSTANCE.resolveRefAnnotation(this);
     }
     
     @Override
@@ -62,6 +65,10 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
     	commandFilterManager.init();
     }
 
+    @RefConfig(autoRefresh = true,defaultValue = "true",path = "mysql.log-sql-error")
+    Boolean logSqlError;
+    
+    
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
@@ -97,11 +104,15 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
             connCtx.setResponseObject(null);
 
             String errMessage="Error Caught:" + th.getMessage();
-            logError(connCtx,errMessage,th);
+            if (logSqlError) {
+            	logError(connCtx,errMessage,th);
+            }
             
             //构造错误返回信息
 //			  logger.error(th.getMessage(),th);
             resultPacket = ErrorResponse.create(11, errMessage);
+        }finally {
+        	Util.cleanRequestInfo(connCtx);
         }
 
         //Send the message
