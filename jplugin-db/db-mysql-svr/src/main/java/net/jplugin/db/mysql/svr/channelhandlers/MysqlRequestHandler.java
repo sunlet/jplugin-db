@@ -96,9 +96,12 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
             //清理返回结构
             connCtx.setResponseObject(null);
 
+            String errMessage="Error Caught:" + th.getMessage();
+            logError(connCtx,errMessage,th);
+            
             //构造错误返回信息
 //			  logger.error(th.getMessage(),th);
-            resultPacket = ErrorResponse.create(11, "Error Caught:" + th.getMessage());
+            resultPacket = ErrorResponse.create(11, errMessage);
         }
 
         //Send the message
@@ -109,7 +112,12 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
         }
     }
 
-    private void handleRequest(ConnectionContext connCtx, IRequestObject msg) {
+    private void logError(ConnectionContext connCtx, String errMessage, Throwable th) {
+    	String query = Util.getCommandQuery(connCtx);
+		logger.error(errMessage + "  Query="+query ,th);
+	}
+
+	private void handleRequest(ConnectionContext connCtx, IRequestObject msg) {
         // Do check
         if (msg instanceof AuthRequest) {
             handleLogin(connCtx, (AuthRequest) msg);
