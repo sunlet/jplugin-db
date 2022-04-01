@@ -91,6 +91,7 @@ public class MysqlStarter extends RefAnnotationSupport implements Runnable{
 
                     pipeline.addLast("bytebuf_to_message", new ByteBufToRequestDecoder());
                     pipeline.addLast("mysql_message_handler", (ChannelHandler) Beans.find("MysqlRequestHandler"));
+//                    pipeline.addLast("mysql_message_handler", new MysqlRequestHandler());
                 }
             });
 

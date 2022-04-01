@@ -57,9 +57,10 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
 			net.jplugin.db.mysql.svr.Plugin.EP_MYSQL_COMMAND_FILTER, this);
 
     public MysqlRequestHandler() {
-//        PluginEnvirement.INSTANCE.resolveRefAnnotation(this);
+        PluginEnvirement.INSTANCE.resolveRefAnnotation(this);
     }
     
+
     @Override
     public void initialize() {
     	commandFilterManager.init();
@@ -68,6 +69,13 @@ public class MysqlRequestHandler extends ChannelInboundHandlerAdapter implements
     @RefConfig(autoRefresh = true,defaultValue = "true",path = "mysql.log-sql-error")
     Boolean logSqlError;
     
+    /**
+     * 共享实例
+     */
+    @Override
+    public boolean isSharable() {
+    	return true;
+    }
     
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
