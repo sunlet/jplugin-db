@@ -37,7 +37,8 @@ public class Util {
 	}
 	
 	public static String getCommandQuery(ConnectionContext ctx) {
-		return getCommandRequest(ctx).getCommand();
+		CommandRequest commandRequest = getCommandRequest(ctx);
+		return commandRequest==null? "":commandRequest.getCommand();
 	}
 
 	public static void cleanRequestInfo(ConnectionContext connCtx) {
